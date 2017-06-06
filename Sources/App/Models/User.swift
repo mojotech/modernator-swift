@@ -5,6 +5,7 @@
 
 import Vapor
 import FluentProvider
+import AuthProvider
 
 final class User: Model {
     let storage = Storage()
@@ -35,12 +36,23 @@ extension User: Preparation {
     static func prepare(_ database: Database) throws {
         try database.create(self) { builder in
             builder.id()
-            builder.string("username")
+            builder.string("username", unique: true)
             builder.string("password")
         }
     }
 
     static func revert(_ database: Database) throws {
         try database.delete(self)
+    }
+}
+
+// MARK: Auth
+
+extension User: Authenticatable {}
+extension User: SessionPersistable {}
+
+extension Request {
+    func user() throws -> User {
+        return try auth.assertAuthenticated()
     }
 }
