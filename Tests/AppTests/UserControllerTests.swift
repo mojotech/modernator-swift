@@ -21,10 +21,15 @@ class UserControllerTests: TestCase {
     }
 
     func testLogin() throws {
-        let req = Request(method: .post, uri: "/users/login")
+        let username = "testlogin"
+        let password = "testloginpassword"
+
+        try User(username: username, password: try drop.hash.make(password).makeString()).save()
+
+        let req = try makeTestRequest(method: .post, path: "users/login", json: JSON(node: ["loginName": username, "loginPassword": password]))
         try drop
             .testResponse(to: req)
-            .assertStatus(is: .badRequest)
+            .assertStatus(is: .ok)
     }
 
     func testMe() throws {
