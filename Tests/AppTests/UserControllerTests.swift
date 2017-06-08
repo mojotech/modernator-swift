@@ -13,6 +13,11 @@ class UserControllerTests: TestCase {
         try drop
             .testResponse(to: req)
             .assertStatus(is: .badRequest)
+
+        let reqCreate = try makeTestRequest(method: .post, path: "users", json: JSON(node: ["userName": "testun", "userPassword": "testpw"]))
+        try drop
+            .testResponse(to: reqCreate)
+            .assertStatus(is: .ok)
     }
 
     func testLogin() throws {
