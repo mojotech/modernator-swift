@@ -55,7 +55,7 @@ final class UserController {
             .filter("password", passwordHash)
             .first()
             else {
-                throw Abort(.forbidden)
+                throw Abort(.unauthorized)
         }
 
         req.auth.authenticate(match)
