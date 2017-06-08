@@ -1,7 +1,7 @@
 import Vapor
 import HTTP
 
-/// Here we have a controller that helps facilitate the /user endpoint
+/// Here we have a controller that helps facilitate the /users endpoint
 final class UserController {
 
     let hash: HashProtocol
@@ -11,8 +11,8 @@ final class UserController {
     }
 
     // Create a new user
-    func create(_ request: Request) throws -> ResponseRepresentable {
-        guard let json = request.json else {
+    func create(req: Request) throws -> ResponseRepresentable {
+        guard let json = req.json else {
             throw Abort(.badRequest)
         }
 
@@ -24,6 +24,8 @@ final class UserController {
         }
 
         // TODO: better error message if username already exists
+        // (keep in mind this is handled right now by a 'unique' constraint
+        // in the table schema)
 
         let user = User(
             username: username,
@@ -34,14 +36,14 @@ final class UserController {
     }
 
     // Authenticate
-    func login(_ request: Request) throws -> ResponseRepresentable {
+    func login(req: Request) throws -> ResponseRepresentable {
         return "login"
     }
 
     // Get currently authenticated user
-    func me(_ request: Request) throws -> ResponseRepresentable {
+    func me(req: Request) throws -> ResponseRepresentable {
         var json = JSON()
-        let user = try request.user()
+        let user = try req.user()
         try json.set("userId", user.id)
         try json.set("userName", user.username)
         // TODO answererSessions
