@@ -9,20 +9,27 @@ class UserControllerTests: TestCase {
     let drop = try! Droplet.testable()
 
     func testCreate() throws {
-        let req = Request(method: .post, uri: "/users")
+        let req_bad = Request(method: .post, uri: "/users")
         try drop
-            .testResponse(to: req)
+            .testResponse(to: req_bad)
             .assertStatus(is: .badRequest)
 
-        let reqCreate = try makeTestRequest(method: .post, path: "users", json: JSON(node: ["userName": "testun", "userPassword": "testpw"]))
+
+        let req = try makeTestRequest(method: .post, path: "users", json: JSON(node: ["userName": "testcreate", "userPassword": "testcreatepassword"]))
         try drop
-            .testResponse(to: reqCreate)
+            .testResponse(to: req)
             .assertStatus(is: .ok)
     }
 
     func testLogin() throws {
-        let username = "testlogin"
-        let password = "testloginpassword"
+        let req_bad = Request(method: .post, uri: "/users/login")
+        try drop
+            .testResponse(to: req_bad)
+            .assertStatus(is: .badRequest)
+
+
+        let username = "testuserslogin"
+        let password = "testusersloginpassword"
 
         try User(username: username, password: try drop.hash.make(password).makeString()).save()
 
@@ -37,11 +44,20 @@ class UserControllerTests: TestCase {
             .testResponse(to: .get, at: "users/me")
             .assertStatus(is: .forbidden)
 
-        // TODO create user and actually test:
-//        try drop
-//            .testResponse(to: .get, at: "users/me")
-//            .assertStatus(is: .ok)
-//            .assertBody(contains: "{") // *some* JSON
+
+        let username = "testusersme"
+        let password = "testusersmepassword"
+
+        let user = User(username: username, password: try drop.hash.make(password).makeString())
+        try user.save()
+
+        let req = Request(method: .get, uri: "/users/me")
+        req.auth.authenticate(user)
+
+        try drop
+            .testResponse(to: req)
+            .assertStatus(is: .ok)
+            .assertJSON("userName", equals: username)
     }
 }
 
