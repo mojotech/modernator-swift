@@ -37,7 +37,31 @@ final class UserController {
 
     // Authenticate
     func login(req: Request) throws -> ResponseRepresentable {
-        return "login"
+        guard let json = req.json else {
+            throw Abort(.badRequest)
+        }
+
+        guard let username = json["loginName"]?.string else {
+            throw Abort(.badRequest)
+        }
+        guard let password = json["loginPassword"]?.string else {
+            throw Abort(.badRequest)
+        }
+
+        let passwordHash = try hash.make(password.makeBytes()).makeString()
+
+        guard let match = try User.makeQuery()
+            .filter("username", username)
+            .filter("password", passwordHash)
+            .first()
+            else {
+                throw Abort(.forbidden)
+        }
+
+        req.auth.authenticate(match)
+        try match.persist(for: req)
+
+        return try me(req: req).makeResponse()
     }
 
     // Get currently authenticated user
