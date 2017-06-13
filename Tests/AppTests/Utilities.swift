@@ -4,6 +4,7 @@ import Foundation
 import XCTest
 import Testing
 import FluentProvider
+import HTTP
 
 extension Droplet {
     static func testable() throws -> Droplet {
@@ -26,4 +27,16 @@ class TestCase: XCTestCase {
         Node.fuzzy = [Row.self, JSON.self, Node.self]
         Testing.onFail = XCTFail
     }
+}
+
+func makeTestRequest(method: HTTP.Method, path: String, json: JSON? = nil) throws -> Request {
+    let req = Request(method: method, uri: "/" + path)
+
+    if (json != nil) {
+        assert(method != .get)
+        req.headers["Content-Type"] = "application/json"
+        req.body = try Body(json!)
+    }
+
+    return req
 }

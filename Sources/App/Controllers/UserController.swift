@@ -55,13 +55,13 @@ final class UserController {
             .filter("password", passwordHash)
             .first()
             else {
-                throw Abort(.forbidden)
+                throw Abort(.unauthorized)
         }
 
         req.auth.authenticate(match)
         try match.persist(for: req)
 
-        return try me(req: req).makeResponse()
+        return try me(req: req)
     }
 
     // Get currently authenticated user
