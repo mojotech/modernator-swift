@@ -71,7 +71,7 @@
       "package": "Fluent",
       "reason": null,
       "repositoryURL": "https://github.com/vapor/fluent.git",
-      "version": "2.0.4"
+      "version": "2.1.0"
     },
     {
       "package": "FluentProvider",
@@ -149,7 +149,7 @@
       "package": "Vapor",
       "reason": null,
       "repositoryURL": "https://github.com/vapor/vapor.git",
-      "version": "2.0.7"
+      "version": "2.0.8"
     }
   ],
   "version": 1
