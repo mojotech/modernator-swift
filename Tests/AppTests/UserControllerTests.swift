@@ -9,7 +9,7 @@ class UserControllerTests: TestCase {
     let drop = try! Droplet.testable()
 
     func testCreate() throws {
-        let req_bad = Request(method: .post, uri: "/users")
+        let req_bad = try makeTestRequest(method: .post, path: "/users")
         try drop
             .testResponse(to: req_bad)
             .assertStatus(is: .badRequest)
@@ -22,7 +22,7 @@ class UserControllerTests: TestCase {
     }
 
     func testLogin() throws {
-        let req_bad = Request(method: .post, uri: "/users/login")
+        let req_bad = try makeTestRequest(method: .post, path: "users/login")
         try drop
             .testResponse(to: req_bad)
             .assertStatus(is: .badRequest)
@@ -51,7 +51,7 @@ class UserControllerTests: TestCase {
         let user = User(username: username, password: try drop.hash.make(password).makeString())
         try user.save()
 
-        let req = Request(method: .get, uri: "/users/me")
+        let req = try makeTestRequest(method: .get, path: "users/me");
         req.auth.authenticate(user)
 
         try drop

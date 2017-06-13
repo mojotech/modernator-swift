@@ -29,6 +29,14 @@ class TestCase: XCTestCase {
     }
 }
 
-func makeTestRequest(method: HTTP.Method, path: String, json: JSON) throws -> Request {
-    return Request(method: method, uri: "/" + path, headers: ["Content-Type": "application/json"], body: try Body(json))
+func makeTestRequest(method: HTTP.Method, path: String, json: JSON? = nil) throws -> Request {
+    let req = Request(method: method, uri: "/" + path)
+
+    if (json != nil) {
+        assert(method != .get)
+        req.headers["Content-Type"] = "application/json"
+        req.body = try Body(json!)
+    }
+
+    return req
 }
