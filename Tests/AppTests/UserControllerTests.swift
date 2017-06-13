@@ -38,6 +38,14 @@ class UserControllerTests: TestCase {
             .assertStatus(is: .badRequest)
     }
 
+    func testLogin_invalid() throws {
+        let req = try makeTestRequest(method: .post, path: "users/login", json: JSON(node: ["loginName": "", "loginPassword": ""]))
+
+        try drop
+            .testResponse(to: req)
+            .assertStatus(is: .unauthorized)
+    }
+
     func testLogin_success() throws {
         let username = "testuserslogin"
         let password = "testusersloginpassword"
@@ -84,6 +92,7 @@ extension UserControllerTests {
         ("testCreate_bad", testCreate_bad),
         ("testCreate_success", testCreate_success),
         ("testLogin_bad", testLogin_bad),
+        ("testLogin_invalid", testLogin_invalid),
         ("testLogin_success", testLogin_success),
         ("testMe_bad", testMe_bad),
         ("testMe_success", testMe_success)
