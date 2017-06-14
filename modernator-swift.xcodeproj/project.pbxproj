@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B2D71301EF03A7800CC60A0 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2D712F1EF03A7800CC60A0 /* Session.swift */; };
+		2B2D71321EF07B0D00CC60A0 /* SessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2D71311EF07B0D00CC60A0 /* SessionController.swift */; };
 		OBJ_1010 /* Exports.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_704 /* Exports.swift */; };
 		OBJ_1011 /* ClientStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_706 /* ClientStream.swift */; };
 		OBJ_1012 /* InternetStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_707 /* InternetStream.swift */; };
@@ -5495,6 +5497,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2B2D712F1EF03A7800CC60A0 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		2B2D71311EF07B0D00CC60A0 /* SessionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionController.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Droplet+Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Droplet+Setup.swift"; sourceTree = "<group>"; };
 		OBJ_100 /* Filterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filterable.swift; sourceTree = "<group>"; };
 		OBJ_101 /* FilterableKey+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FilterableKey+String.swift"; sourceTree = "<group>"; };
@@ -7128,6 +7132,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_13 /* UserController.swift */,
+				2B2D71311EF07B0D00CC60A0 /* SessionController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -7169,6 +7174,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_15 /* User.swift */,
+				2B2D712F1EF03A7800CC60A0 /* Session.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -11396,8 +11402,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				2B2D71321EF07B0D00CC60A0 /* SessionController.swift in Sources */,
 				OBJ_2651 /* Config+Setup.swift in Sources */,
 				OBJ_2652 /* Droplet+Setup.swift in Sources */,
+				2B2D71301EF03A7800CC60A0 /* Session.swift in Sources */,
 				OBJ_2653 /* Routes.swift in Sources */,
 				OBJ_2654 /* UserController.swift in Sources */,
 				OBJ_2655 /* User.swift in Sources */,
