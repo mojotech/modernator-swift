@@ -22,6 +22,18 @@ final class SessionController: ResourceRepresentable, EmptyInitializable {
         return try session.makeJSON()
     }
 
+    func lock(req: Request) throws -> ResponseRepresentable {
+        let sessionId = try req.parameters.next(Int.self)
+        guard let session = try Session.find(sessionId) else {
+            throw Abort(.notFound)
+        }
+
+        session.locked = true
+        try session.save()
+
+        return Response(status: .ok)
+    }
+
     func makeResource() -> Resource<Session> {
         return Resource(
             index: index,
