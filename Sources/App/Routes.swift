@@ -10,5 +10,7 @@ extension Droplet {
         post("users", handler: userController.create)
         post("users/login", handler: userController.login)
         authed.get("users/me", handler: userController.me)
+
+        try authed.resource("sessions", SessionController.self)
     }
 }
