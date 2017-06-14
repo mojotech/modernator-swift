@@ -4,11 +4,14 @@ import AuthProvider
 extension Droplet {
     func setupRoutes() throws {
         let persistMiddleware = PersistMiddleware(User.self)
-        let authed = grouped(persistMiddleware)
+        let global = grouped(persistMiddleware)
+
+        let authMiddleware = AuthMiddleware(User.self)
+        let authed = global.grouped(authMiddleware)
 
         let userController = UserController(self.hash)
-        post("users", handler: userController.create)
-        post("users/login", handler: userController.login)
+        global.post("users", handler: userController.create)
+        global.post("users/login", handler: userController.login)
         authed.get("users/me", handler: userController.me)
 
         let sessionController = SessionController()
