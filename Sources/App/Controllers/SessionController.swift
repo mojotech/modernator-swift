@@ -28,6 +28,10 @@ final class SessionController: ResourceRepresentable, EmptyInitializable {
             throw Abort(.notFound)
         }
 
+        guard session.answererId == req.user().id else {
+            throw Abort(.unauthorized)
+        }
+
         session.locked = true
         try session.save()
 
