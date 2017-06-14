@@ -32,6 +32,16 @@ final class User: Model {
 
 }
 
+// MARK: Relations
+
+extension User {
+    var sessions: Children<User, Session> {
+        return children()
+    }
+}
+
+// MARK: Schema
+
 extension User: Preparation {
     static func prepare(_ database: Database) throws {
         try database.create(self) { builder in
