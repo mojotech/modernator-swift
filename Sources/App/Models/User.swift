@@ -62,7 +62,7 @@ extension User: Authenticatable {}
 extension User: SessionPersistable {}
 
 extension Request {
-    func user() throws -> User {
-        return try auth.assertAuthenticated()
+    func user() -> User {
+        return auth.authenticated()!
     }
 }

@@ -17,7 +17,7 @@ final class SessionController: ResourceRepresentable, EmptyInitializable {
             throw Abort(.badRequest)
         }
 
-        let session = Session(answerer: try req.user(), name: name, locked: false)
+        let session = Session(answerer: req.user(), name: name, locked: false)
         try session.save()
         return try session.makeJSON()
     }
