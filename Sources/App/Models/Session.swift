@@ -1,8 +1,3 @@
-//
-//  User.swift
-//  modernator-swift-vapor
-//
-
 import Vapor
 import FluentProvider
 
