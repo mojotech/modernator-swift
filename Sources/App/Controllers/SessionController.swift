@@ -4,6 +4,8 @@ import HTTP
 /// Here we have a controller that helps facilitate the /sessions endpoint
 final class SessionController: ResourceRepresentable, EmptyInitializable {
 
+    var websockets = Set<WebSocket>()
+
     func index(req: Request) throws -> ResponseRepresentable {
         return try Session.all().makeJSON()
     }
@@ -54,10 +56,21 @@ final class SessionController: ResourceRepresentable, EmptyInitializable {
 
     func messagesSocket(req: Request, ws: WebSocket) throws {
 
-        // Setup
+        let sessionId = try req.parameters.next(Int.self)
+        guard let session = try Session.find(sessionId) else {
+            throw Abort(.notFound)
+        }
+
+        var json = JSON()
+        try json.set("tag", "SessionState")
+        try json.set("session", session)
+
+        try ws.send(json.makeBytes())
+
+        websockets.insert(ws)
 
         ws.onClose = { ws, code, reason, clean in
-            // cleanup
+            self.websockets.remove(ws)
         }
 
     }
