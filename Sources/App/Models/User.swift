@@ -30,7 +30,7 @@ final class User: Model {
 // MARK: Relations
 
 extension User {
-    var sessions: Children<User, Session> {
+    var answererSessions: Children<User, Session> {
         return children()
     }
 }
