@@ -22,6 +22,10 @@ final class SessionController: ResourceRepresentable, EmptyInitializable {
         return try session.makeJSON()
     }
 
+    func show(req: Request, session: Session) throws -> ResponseRepresentable {
+        return try session.makeJSON()
+    }
+
     func lock(req: Request) throws -> ResponseRepresentable {
         let sessionId = try req.parameters.next(Int.self)
         guard let session = try Session.find(sessionId) else {
@@ -38,11 +42,31 @@ final class SessionController: ResourceRepresentable, EmptyInitializable {
         return Response(status: .ok)
     }
 
+    // Non-websocket endpoint for messages
+    func messages(req: Request) throws -> ResponseRepresentable {
+        let sessionId = try req.parameters.next(Int.self)
+        guard let session = try Session.find(sessionId) else {
+            throw Abort(.notFound)
+        }
+
+        return try show(req: req, session: session)
+    }
+
+    func messagesSocket(req: Request, ws: WebSocket) throws {
+
+        // Setup
+
+        ws.onClose = { ws, code, reason, clean in
+            // cleanup
+        }
+
+    }
+
     func makeResource() -> Resource<Session> {
         return Resource(
             index: index,
             store: create,
-            show: nil,
+            show: show,
             update: nil,
             replace: nil,
             destroy: nil, // delete
