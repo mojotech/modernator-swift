@@ -1,0 +1,12 @@
+{
+    "allowedOrigin": "http://localhost:3000",
+    "allowedMethods": ["GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"],
+    "allowCredentials": true,
+    "allowedHeaders": [
+                       "Accept",
+                       "Authorization",
+                       "Content-Type",
+                       "Origin",
+                       "X-Requested-With"
+                       ]
+}
