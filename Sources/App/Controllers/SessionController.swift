@@ -21,7 +21,7 @@ final class SessionController: ResourceRepresentable, EmptyInitializable {
 
         let session = Session(answerer: req.user(), name: name, locked: false)
         try session.save()
-        return try session.makeJSON()
+        return try session.makeJSONSimple()
     }
 
     func show(req: Request, session: Session) throws -> ResponseRepresentable {

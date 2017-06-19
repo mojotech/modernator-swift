@@ -51,6 +51,20 @@ extension User: Preparation {
     }
 }
 
+// MARK: JSON
+
+extension User: JSONRepresentable {
+    func makeJSON() throws -> JSON {
+        var json = JSON()
+        try json.set("userId", id)
+        try json.set("userName", username)
+        // TODO:
+        try json.set("answererSessions", [])
+        try json.set("questionerSessions", [])
+        return json
+    }
+}
+
 // MARK: Auth
 
 extension User: Authenticatable {}

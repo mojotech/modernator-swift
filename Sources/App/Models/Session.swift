@@ -60,6 +60,15 @@ extension Session: Preparation {
 extension Session: JSONRepresentable {
     func makeJSON() throws -> JSON {
         var json = JSON()
+        try json.set("session", try makeJSONSimple())
+        try json.set("answerer", answerer.get())
+        // TODO:
+        try json.set("questioners", [])
+        try json.set("questions", [])
+        return json
+    }
+    func makeJSONSimple() throws -> JSON {
+        var json = JSON()
         try json.set("sessionId", id)
         try json.set("name", name)
         try json.set("locked", locked ? "Locked" : "Unlocked")
