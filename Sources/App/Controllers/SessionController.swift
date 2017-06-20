@@ -51,7 +51,10 @@ final class SessionController: ResourceRepresentable, EmptyInitializable {
         }
 
         let user = req.user()
-        try session.questioners.add(user)
+        // prevent duplicate pivot entries
+        if !(try session.questioners.isAttached(user)) {
+            try session.questioners.add(user)
+        }
 
         return try user.makeJSON()
     }
