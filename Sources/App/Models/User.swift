@@ -58,8 +58,8 @@ extension User: JSONRepresentable {
         var json = JSON()
         try json.set("userId", id)
         try json.set("userName", username)
+        try json.set("answererSessions", try answererSessions.all().map { ($0.id?.int)! })
         // TODO:
-        try json.set("answererSessions", [])
         try json.set("questionerSessions", [])
         return json
     }
