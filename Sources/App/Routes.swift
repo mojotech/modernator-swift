@@ -22,7 +22,7 @@ extension Droplet {
 
         authed.post("sessions", Int.parameter, "questions", "ask", handler: sessionController.questionAsk)
         authed.post("sessions", Int.parameter, "questions", Int.parameter, "upvote", handler: sessionController.questionUpvote)
-//        authed.post("sessions", Int.parameter, "questions", Int.parameter, "answer", handler: sessionController.questionAnswer)
+        authed.post("sessions", Int.parameter, "questions", Int.parameter, "answer", handler: sessionController.questionAnswer)
 
         authed.get("sessions", Int.parameter, "messages", handler: sessionController.messages)
         authed.socket("sessions", Int.parameter, "messages", handler: sessionController.messagesSocket)
