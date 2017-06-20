@@ -2,6 +2,25 @@ import Vapor
 import HTTP
 import Console
 
+enum MessageTag: String {
+    case SessionState, SessionLocked, SessionExpired, SessionClosed, SessionExceptionMessage
+    case QuestionAsked, QuestionUpvoted, QuestionAnswered
+    case QuestionerJoined
+}
+
+extension MessageTag {
+    var key: String {
+        if rawValue.hasPrefix("Session") {
+            return "session"
+        } else if rawValue.hasPrefix("Questioner") {
+            return "questioner"
+        } else if rawValue.hasPrefix("Question") {
+            return "question"
+        }
+        return "unknown"
+    }
+}
+
 /// Here we have a controller that helps facilitate the /sessions endpoint
 final class SessionController: ResourceRepresentable {
 
@@ -47,6 +66,8 @@ final class SessionController: ResourceRepresentable {
         session.locked = true
         try session.save()
 
+        try sendMessage(session: session, tag: .SessionLocked, data: session.makeJSON())
+
         return Response(status: .ok)
     }
 
@@ -60,6 +81,8 @@ final class SessionController: ResourceRepresentable {
         // prevent duplicate pivot entries
         if !(try session.questioners.isAttached(user)) {
             try session.questioners.add(user)
+
+            try sendMessage(session: session, tag: .QuestionerJoined, data: user.makeJSON())
         }
 
         return try user.makeJSON()
@@ -82,6 +105,8 @@ final class SessionController: ResourceRepresentable {
         let question = Question(session: session, user: req.user(), text: text, answered: false)
         try question.save()
 
+        try sendMessage(session: session, tag: .QuestionAsked, data: question.makeJSON())
+
         return try question.makeJSON()
     }
 
@@ -97,9 +122,11 @@ final class SessionController: ResourceRepresentable {
         }
 
         // prevent double-voting
-        if ((try? question.votes.filter(User.foreignIdKey, req.user().id).first()) == nil) {
+        if ((try question.votes.filter(User.foreignIdKey, req.user().id).first()) == nil) {
             let vote = Vote(question: question, user: req.user())
             try vote.save()
+
+            try sendMessage(session: session, tag: .QuestionUpvoted, data: question.makeJSON())
         }
 
         return try question.makeJSON()
@@ -144,7 +171,16 @@ final class SessionController: ResourceRepresentable {
         ws.onClose = { ws, code, reason, clean in
             self.websockets[sessionId]!.remove(ws)
         }
+    }
 
+    func sendMessage(session: Session, tag: MessageTag, data: JSON) throws {
+        var json = JSON()
+        try json.set("tag", tag.rawValue)
+        try json.set(tag.key, data)
+
+        try websockets[session.id!.int!]?.forEach { ws in
+            try ws.send(json.makeBytes().makeString())
+        }
     }
 
     func makeResource() -> Resource<Session> {
