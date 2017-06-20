@@ -1,10 +1,16 @@
 import Vapor
 import HTTP
+import Console
 
 /// Here we have a controller that helps facilitate the /sessions endpoint
-final class SessionController: ResourceRepresentable, EmptyInitializable {
+final class SessionController: ResourceRepresentable {
 
-    var websockets = Set<WebSocket>()
+    let console: ConsoleProtocol
+    var websockets = [Int : Set<WebSocket>]()
+
+    init(_ console: ConsoleProtocol) {
+        self.console = console
+    }
 
     func index(req: Request) throws -> ResponseRepresentable {
         return try Session.all().makeJSON()
@@ -80,12 +86,23 @@ final class SessionController: ResourceRepresentable, EmptyInitializable {
         try json.set("tag", "SessionState")
         try json.set("session", session)
 
-        try ws.send(json.makeBytes())
+        try ws.send(json.makeBytes().makeString())
 
-        websockets.insert(ws)
+        if (websockets[sessionId] == nil) {
+            websockets[sessionId] = Set<WebSocket>()
+        }
+        websockets[sessionId]!.insert(ws)
+
+
+        background {
+            while ws.state == .open {
+                try? ws.ping()
+                self.console.wait(seconds: 10)
+            }
+        }
 
         ws.onClose = { ws, code, reason, clean in
-            self.websockets.remove(ws)
+            self.websockets[sessionId]!.remove(ws)
         }
 
     }

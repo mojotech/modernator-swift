@@ -14,7 +14,7 @@ extension Droplet {
         global.post("users/login", handler: userController.login)
         authed.get("users/me", handler: userController.me)
 
-        let sessionController = SessionController()
+        let sessionController = SessionController(self.console)
         authed.resource("sessions", sessionController)
         authed.post("sessions", Int.parameter, "lock", handler: sessionController.lock)
 
