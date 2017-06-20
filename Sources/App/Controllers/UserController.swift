@@ -66,12 +66,6 @@ final class UserController {
 
     // Get currently authenticated user
     func me(req: Request) throws -> ResponseRepresentable {
-        var json = JSON()
-        let user = req.user()
-        try json.set("userId", user.id)
-        try json.set("userName", user.username)
-        // TODO answererSessions
-        // TODO questionerSessions
-        return json
+        return try req.user().makeJSON()
     }
 }
