@@ -24,5 +24,6 @@ extension Config {
         preparations.append(Session.self)
         preparations.append(Pivot<Session, User>.self)
         preparations.append(Question.self)
+        preparations.append(Vote.self)
     }
 }

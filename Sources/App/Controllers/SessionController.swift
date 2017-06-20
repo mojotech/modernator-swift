@@ -85,6 +85,26 @@ final class SessionController: ResourceRepresentable {
         return try question.makeJSON()
     }
 
+    func questionUpvote(req: Request) throws -> ResponseRepresentable {
+        let sessionId = try req.parameters.next(Int.self)
+        guard let session = try Session.find(sessionId) else {
+            throw Abort(.notFound)
+        }
+
+        let questionId = try req.parameters.next(Int.self)
+        guard let question = try session.questions.find(questionId) else {
+            throw Abort(.notFound)
+        }
+
+        // prevent double-voting
+        if ((try? question.votes.filter(User.foreignIdKey, req.user().id).first()) == nil) {
+            let vote = Vote(question: question, user: req.user())
+            try vote.save()
+        }
+
+        return try question.makeJSON()
+    }
+
     // Non-websocket endpoint for messages
     func messages(req: Request) throws -> ResponseRepresentable {
         let sessionId = try req.parameters.next(Int.self)

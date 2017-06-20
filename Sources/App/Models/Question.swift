@@ -49,6 +49,11 @@ extension Question {
     }
 }
 
+extension Question {
+    var votes: Children<Question, Vote> {
+        return children()
+    }
+}
 
 // MARK: Schema
 
@@ -75,7 +80,7 @@ extension Question: JSONRepresentable {
         var json = JSON()
         try json.set("questionId", id)
         try json.set("sessionId", session.parentId)
-        try json.set("questionVotes", []) // TODO
+        try json.set("questionVotes", votes.all().flatMap { $0.userId.int })
         try json.set("questionText", text)
         try json.set("questionAnswered", answered)
         return json
