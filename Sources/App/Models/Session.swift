@@ -44,6 +44,12 @@ extension Session {
     }
 }
 
+extension Session {
+    var questions: Children<Session, Question> {
+        return children()
+    }
+}
+
 // MARK: Schema
 
 extension Session: Preparation {
@@ -69,8 +75,7 @@ extension Session: JSONRepresentable {
         try json.set("session", try makeJSONSimple())
         try json.set("answerer", answerer.get())
         try json.set("questioners", questioners.all())
-        // TODO:
-        try json.set("questions", [])
+        try json.set("questions", questions.all())
         return json
     }
     func makeJSONSimple() throws -> JSON {

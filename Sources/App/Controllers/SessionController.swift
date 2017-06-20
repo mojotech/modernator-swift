@@ -65,6 +65,26 @@ final class SessionController: ResourceRepresentable {
         return try user.makeJSON()
     }
 
+    func questionAsk(req: Request) throws -> ResponseRepresentable {
+        let sessionId = try req.parameters.next(Int.self)
+        guard let session = try Session.find(sessionId) else {
+            throw Abort(.notFound)
+        }
+
+        guard let json = req.json else {
+            throw Abort(.badRequest)
+        }
+
+        guard let text = json["question"]?.string else {
+            throw Abort(.badRequest)
+        }
+
+        let question = Question(session: session, user: req.user(), text: text, answered: false)
+        try question.save()
+
+        return try question.makeJSON()
+    }
+
     // Non-websocket endpoint for messages
     func messages(req: Request) throws -> ResponseRepresentable {
         let sessionId = try req.parameters.next(Int.self)

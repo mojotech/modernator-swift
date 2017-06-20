@@ -23,5 +23,6 @@ extension Config {
         preparations.append(User.self)
         preparations.append(Session.self)
         preparations.append(Pivot<Session, User>.self)
+        preparations.append(Question.self)
     }
 }
