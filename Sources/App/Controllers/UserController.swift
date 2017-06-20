@@ -32,6 +32,10 @@ final class UserController {
             password: try hash.make(password.makeBytes()).makeString()
         )
         try user.save()
+
+        // auto login on create
+        try user.persist(for: req)
+
         return Response(status: .ok)
     }
 
