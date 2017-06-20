@@ -44,6 +44,18 @@ final class SessionController: ResourceRepresentable, EmptyInitializable {
         return Response(status: .ok)
     }
 
+    func join(req: Request) throws -> ResponseRepresentable {
+        let sessionId = try req.parameters.next(Int.self)
+        guard let session = try Session.find(sessionId) else {
+            throw Abort(.notFound)
+        }
+
+        let user = req.user()
+        try session.questioners.add(user)
+
+        return try user.makeJSON()
+    }
+
     // Non-websocket endpoint for messages
     func messages(req: Request) throws -> ResponseRepresentable {
         let sessionId = try req.parameters.next(Int.self)

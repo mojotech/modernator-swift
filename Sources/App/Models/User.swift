@@ -35,6 +35,12 @@ extension User {
     }
 }
 
+extension User {
+    var questionerSessions: Siblings<User, Session, Pivot<Session, User>> {
+        return siblings()
+    }
+}
+
 // MARK: Schema
 
 extension User: Preparation {
@@ -58,9 +64,8 @@ extension User: JSONRepresentable {
         var json = JSON()
         try json.set("userId", id)
         try json.set("userName", username)
-        try json.set("answererSessions", try answererSessions.all().map { ($0.id?.int)! })
-        // TODO:
-        try json.set("questionerSessions", [])
+        try json.set("answererSessions", try answererSessions.all().flatMap { $0.id?.int })
+        try json.set("questionerSessions", try questionerSessions.all().flatMap { $0.id?.int })
         return json
     }
 }

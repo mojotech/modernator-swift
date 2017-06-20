@@ -38,6 +38,12 @@ extension Session {
     }
 }
 
+extension Session {
+    var questioners: Siblings<Session, User, Pivot<Session, User>> {
+        return siblings()
+    }
+}
+
 // MARK: Schema
 
 extension Session: Preparation {
@@ -62,8 +68,8 @@ extension Session: JSONRepresentable {
         var json = JSON()
         try json.set("session", try makeJSONSimple())
         try json.set("answerer", answerer.get())
+        try json.set("questioners", questioners.all())
         // TODO:
-        try json.set("questioners", [])
         try json.set("questions", [])
         return json
     }

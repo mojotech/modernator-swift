@@ -18,6 +18,8 @@ extension Droplet {
         authed.resource("sessions", sessionController)
         authed.post("sessions", Int.parameter, "lock", handler: sessionController.lock)
 
+        authed.post("sessions", Int.parameter, "join", handler: sessionController.join)
+
         authed.get("sessions", Int.parameter, "messages", handler: sessionController.messages)
         authed.socket("sessions", Int.parameter, "messages", handler: sessionController.messagesSocket)
     }
