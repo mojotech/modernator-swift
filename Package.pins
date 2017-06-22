@@ -26,10 +26,10 @@
       "version": "1.0.0"
     },
     {
-      "package": "CMySQL",
+      "package": "CPostgreSQL",
       "reason": null,
-      "repositoryURL": "https://github.com/vapor/cmysql.git",
-      "version": "2.0.2"
+      "repositoryURL": "https://github.com/vapor-community/cpostgresql.git",
+      "version": "2.0.0"
     },
     {
       "package": "CTLS",
@@ -65,19 +65,19 @@
       "package": "Engine",
       "reason": null,
       "repositoryURL": "https://github.com/vapor/engine.git",
-      "version": "2.0.4"
+      "version": "2.1.0"
     },
     {
       "package": "Fluent",
       "reason": null,
       "repositoryURL": "https://github.com/vapor/fluent.git",
-      "version": "2.1.0"
+      "version": "2.1.1"
     },
     {
       "package": "FluentProvider",
       "reason": null,
       "repositoryURL": "https://github.com/vapor/fluent-provider.git",
-      "version": "1.1.0"
+      "version": "1.1.1"
     },
     {
       "package": "JSON",
@@ -92,28 +92,28 @@
       "version": "2.0.0"
     },
     {
-      "package": "MySQL",
-      "reason": null,
-      "repositoryURL": "https://github.com/vapor/mysql.git",
-      "version": "2.0.1"
-    },
-    {
-      "package": "MySQLDriver",
-      "reason": null,
-      "repositoryURL": "https://github.com/vapor/mysql-driver.git",
-      "version": "2.0.1"
-    },
-    {
-      "package": "MySQLProvider",
-      "reason": null,
-      "repositoryURL": "https://github.com/vapor/mysql-provider.git",
-      "version": "2.0.0"
-    },
-    {
       "package": "Node",
       "reason": null,
       "repositoryURL": "https://github.com/vapor/node.git",
       "version": "2.0.3"
+    },
+    {
+      "package": "PostgreSQL",
+      "reason": null,
+      "repositoryURL": "https://github.com/vapor-community/postgresql.git",
+      "version": "2.0.2"
+    },
+    {
+      "package": "PostgreSQLDriver",
+      "reason": null,
+      "repositoryURL": "https://github.com/vapor/postgresql-driver.git",
+      "version": "2.0.1"
+    },
+    {
+      "package": "PostgreSQLProvider",
+      "reason": null,
+      "repositoryURL": "https://github.com/vapor-community/postgresql-provider.git",
+      "version": "2.0.0"
     },
     {
       "package": "Random",
@@ -149,7 +149,7 @@
       "package": "Vapor",
       "reason": null,
       "repositoryURL": "https://github.com/vapor/vapor.git",
-      "version": "2.0.8"
+      "version": "2.1.0"
     }
   ],
   "version": 1

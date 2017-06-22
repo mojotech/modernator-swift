@@ -1,0 +1,7 @@
+{
+    "hostname": "127.0.0.1",
+    "user": "postgres",
+    "password": "toor",
+    "database": "modernator",
+    "port": 5432
+}
