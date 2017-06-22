@@ -1,1 +1,1 @@
-web: Run --env=production --workdir=./ --config:servers.default.port=$PORT --config:postgresql.url=$DATABASE_URL
+web: Run --env=production --workdir=./ --config:servers.default.port=$PORT --config:postgresql.url=$DATABASE_URL --config:cors.allowedOrigin=http://modernator.mojotech.com.s3-website-us-east-1.amazonaws.com
