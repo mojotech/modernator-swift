@@ -82,7 +82,11 @@ final class SessionController: ResourceRepresentable {
         if !(try session.questioners.isAttached(user)) {
             try session.questioners.add(user)
 
-            try sendMessage(session: session, tag: .QuestionerJoined, data: user.makeJSON())
+            // custom minimal object for QuestionerJoined
+            var messageData = JSON()
+            try messageData.set("id", user.id)
+            try messageData.set("name", user.username)
+            try sendMessage(session: session, tag: .QuestionerJoined, data: messageData)
         }
 
         return try user.makeJSON()
